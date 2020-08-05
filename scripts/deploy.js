@@ -19,7 +19,7 @@ function checkAndRecord(response, deployAddrs, name){
     }
     console.log(
         "contract for " + name + " deployed: " +
-        JSON.stringify(response.transaction.receipt)
+        JSON.stringify(response.transaction.receipt,null, 2)
     );
     deployAddrs[name] = response.transaction.receipt.contractAddress
 }
