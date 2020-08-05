@@ -3,8 +3,6 @@
 install:
 	npm install -g truffle
 	npm install
-
-setup:
 	bash ./scripts/setup.sh
 
 deploy:
