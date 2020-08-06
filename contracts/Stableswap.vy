@@ -2,6 +2,7 @@
 
 import ERC20m as ERC20m
 import cERC20 as cERC20
+import ERC20 as pERC20
 from vyper.interfaces import ERC20
 
 
@@ -47,7 +48,7 @@ admin_fee: public(uint256)  # admin_fee * 1e10
 max_admin_fee: constant(uint256) = 5 * 10 ** 9
 
 owner: public(address)
-token: ERC20m
+token: pERC20
 
 admin_actions_deadline: public(timestamp)
 transfer_ownership_deadline: public(timestamp)
@@ -270,11 +271,7 @@ def add_liquidity(amounts: uint256[N_COINS], min_mint_amount: uint256):
 
     # Take coins from the sender
     for i in range(N_COINS):
-        if tethered[i] and not use_lending[i]:
-            USDT(self.coins[i]).transferFrom(msg.sender, self, amounts[i])
-        else:
-            assert_modifiable(
-                cERC20(self.coins[i]).transferFrom(msg.sender, self, amounts[i]))
+        ERC20(self.coins[i]).transferFrom(msg.sender, self, amounts[i])
 
     # Mint pool tokens
     self.token.mint(msg.sender, mint_amount)
@@ -535,11 +532,9 @@ def commit_new_parameters(amplification: uint256,
                           new_fee: uint256,
                           new_admin_fee: uint256):
     assert msg.sender == self.owner
-    assert self.admin_actions_deadline == 0
     assert new_admin_fee <= max_admin_fee
 
     _deadline: timestamp = block.timestamp + admin_actions_delay
-    self.admin_actions_deadline = _deadline
     self.future_A = amplification
     self.future_fee = new_fee
     self.future_admin_fee = new_admin_fee
@@ -550,10 +545,7 @@ def commit_new_parameters(amplification: uint256,
 @public
 def apply_new_parameters():
     assert msg.sender == self.owner
-    assert self.admin_actions_deadline <= block.timestamp\
-        and self.admin_actions_deadline > 0
 
-    self.admin_actions_deadline = 0
     _A: uint256 = self.future_A
     _fee: uint256 = self.future_fee
     _admin_fee: uint256 = self.future_admin_fee
@@ -565,19 +557,11 @@ def apply_new_parameters():
 
 
 @public
-def revert_new_parameters():
-    assert msg.sender == self.owner
-
-    self.admin_actions_deadline = 0
-
-
-@public
 def commit_transfer_ownership(_owner: address):
     assert msg.sender == self.owner
     assert self.transfer_ownership_deadline == 0
 
     _deadline: timestamp = block.timestamp + admin_actions_delay
-    self.transfer_ownership_deadline = _deadline
     self.future_owner = _owner
 
     log.CommitNewAdmin(_deadline, _owner)
@@ -586,10 +570,7 @@ def commit_transfer_ownership(_owner: address):
 @public
 def apply_transfer_ownership():
     assert msg.sender == self.owner
-    assert block.timestamp >= self.transfer_ownership_deadline\
-        and self.transfer_ownership_deadline > 0
 
-    self.transfer_ownership_deadline = 0
     _owner: address = self.future_owner
     self.owner = _owner
 
