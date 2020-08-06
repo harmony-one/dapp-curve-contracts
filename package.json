@@ -10,5 +10,8 @@
     "dotenv": "^8.1.0",
     "openzeppelin-solidity": "^2.2.0",
     "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "bignumber.js": "^9.0.0"
   }
 }

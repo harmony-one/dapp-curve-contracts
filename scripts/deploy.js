@@ -46,14 +46,14 @@ initHmy().then((hmy) => {
 
     console.log("=== Starting Deploy ===")
 
-    deploy(hmy, erc20, ["curve-test-A", "A", 10, Math.pow(18, 3)]).then((response) => {
+    deploy(hmy, erc20, ["curve-test-A", "A", 8, Math.pow(18, 3)]).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_a")
         return response
     }).then((response) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-B", "B", 18, Math.pow(10, 3)])
+        return deploy(hmy, erc20, ["curve-test-B", "B", 8, Math.pow(10, 3)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_b")
         return response
@@ -61,7 +61,7 @@ initHmy().then((hmy) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-C", "C", 18, Math.pow(10, 3)])
+        return deploy(hmy, erc20, ["curve-test-C", "C", 8, Math.pow(10, 3)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_c")
         return response
@@ -69,7 +69,7 @@ initHmy().then((hmy) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-pool", "P", 18, 0])
+        return deploy(hmy, erc20, ["curve-test-pool", "P", 8, 0])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_pool")
         return response
@@ -78,8 +78,8 @@ initHmy().then((hmy) => {
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
         let coins = [deployAddrs.erc20_a, deployAddrs.erc20_b, deployAddrs.erc20_c]
-        let A = 300
-        let fee = 0
+        let A = 66
+        let fee = 1
         return deploy(hmy, stableswap, [coins, coins, deployAddrs.erc20_pool, A, fee])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "stableswap")
