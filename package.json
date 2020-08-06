@@ -2,12 +2,10 @@
   "name": "curve",
   "version": "0.1.0",
   "private": true,
-  "main": "truffle.js",
   "dependencies": {
     "@harmony-js/core": "^0.1.49",
     "@harmony-js/network": "^0.1.45",
     "@harmony-js/utils": "^0.1.45",
-    "@openzeppelin/contracts": "^2.5.1",
     "core-util-is": "^1.0.2",
     "dotenv": "^8.1.0",
     "openzeppelin-solidity": "^2.2.0",
