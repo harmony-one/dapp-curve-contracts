@@ -8,8 +8,16 @@ let initHmy = require('../src/deploy_harmony')
 const gasParams = { gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
 const baseDecimal = 1e18
 
+function printConfig() {
+    console.log("=".repeat(100))
+    console.log("Network:\t", process.env.NETWORK)
+    console.log("Shard ID:\t", process.env.SHARD)
+    console.log("Contracts:\t", getDeployedJSONFile())
+    console.log("=".repeat(100))
+}
+
 function loadHRCContracts(hmy) {
-    let jsonFile = path.join(__dirname, '..', 'deployed', process.env.NETWORK + '.json')
+    let jsonFile = getDeployedJSONFile()
     let jsonStr = fs.readFileSync(jsonFile)
     let addrs = JSON.parse(jsonStr.toString())
 
@@ -20,19 +28,8 @@ function loadHRCContracts(hmy) {
     return tokens
 }
 
-async function getNameAndBalance(hmy, account, hrcToken) {
-    let ecAddr = '0x'+account.basic
-    let name = await hrcToken.methods.name().call(gasParams)
-    let balance = await hrcToken.methods.balanceOf(ecAddr).call(gasParams)
-    return [name, balance.toNumber()]
-}
-
-async function getBalances(hmy, account, tokens) {
-    let promises = []
-    for (let token of tokens) {
-        promises.push(getNameAndBalance(hmy, account, token))
-    }
-    return Promise.all(promises)
+function getDeployedJSONFile() {
+    return path.join(__dirname, '..', 'deployed', process.env.NETWORK + '.json')
 }
 
 function parseInputAccount() {
@@ -46,6 +43,25 @@ function parseInputAccount() {
     }
     return new HarmonyAddress(raw)
 }
+
+async function getBalances(hmy, account, tokens) {
+    let promises = []
+    for (let token of tokens) {
+        promises.push(getNameAndBalance(hmy, account, token))
+    }
+    return Promise.all(promises)
+}
+
+async function getNameAndBalance(hmy, account, hrcToken) {
+    let ecAddr = '0x'+account.basic
+    let name = await hrcToken.methods.name().call(gasParams)
+    let balance = await hrcToken.methods.balanceOf(ecAddr).call(gasParams)
+    return [name, balance.toNumber()]
+}
+
+printConfig()
+
+console.log("Querying balance...")
 
 initHmy().then( (hmy) => {
     let account = parseInputAccount()
