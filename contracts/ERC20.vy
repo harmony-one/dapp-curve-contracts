@@ -90,10 +90,6 @@ def transferFrom(_from : address, _to : address, _value : uint256) -> bool:
     #       so the following subtraction would revert on insufficient balance
     self.balanceOf[_from] -= _value
     self.balanceOf[_to] += _value
-    if msg.sender != self.minter:  # minter is allowed to transfer anything
-        # NOTE: vyper does not allow underflows
-        # so the following subtraction would revert on insufficient allowance
-        self.allowances[_from][msg.sender] -= _value
     log.Transfer(_from, _to, _value)
     return True
 
@@ -109,7 +105,6 @@ def approve(_spender : address, _value : uint256) -> bool:
     @param _spender The address which will spend the funds.
     @param _value The amount of tokens to be spent.
     """
-    assert _value == 0 or self.allowances[msg.sender][_spender] == 0
     self.allowances[msg.sender][_spender] = _value
     log.Approval(msg.sender, _spender, _value)
     return True
