@@ -1,4 +1,4 @@
-.PHONY: install setup deploy
+.PHONY: install deploy check
 
 install:
 	npm install
@@ -6,4 +6,7 @@ install:
 
 deploy:
 	bash ./scripts/deploy.sh
+
+checks:
+	node ./scripts/checks.js
 
