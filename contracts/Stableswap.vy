@@ -400,18 +400,8 @@ def exchange(i: int128, j: int128, dx: uint256, min_dy: uint256):
     rates: uint256[N_COINS] = self._current_rates()
     dy: uint256 = self._exchange(i, j, dx, rates)
     assert dy >= min_dy, "Exchange resulted in fewer coins than expected"
-    tethered: bool[N_COINS] = TETHERED
-    use_lending: bool[N_COINS] = USE_LENDING
-
-    if tethered[i] and not use_lending[i]:
-        USDT(self.coins[i]).transferFrom(msg.sender, self, dx)
-    else:
-        assert_modifiable(cERC20(self.coins[i]).transferFrom(msg.sender, self, dx))
-
-    if tethered[j] and not use_lending[j]:
-        USDT(self.coins[j]).transfer(msg.sender, dy)
-    else:
-        assert_modifiable(cERC20(self.coins[j]).transfer(msg.sender, dy))
+    ERC20(self.coins[i]).transferFrom(msg.sender, self, dx)
+    ERC20(self.coins[j]).transfer(msg.sender, dy)
 
     log.TokenExchange(msg.sender, i, dx, j, dy)
 
@@ -461,19 +451,13 @@ def remove_liquidity(_amount: uint256, min_amounts: uint256[N_COINS]):
     total_supply: uint256 = self.token.totalSupply()
     amounts: uint256[N_COINS] = ZEROS
     fees: uint256[N_COINS] = ZEROS
-    tethered: bool[N_COINS] = TETHERED
-    use_lending: bool[N_COINS] = USE_LENDING
 
     for i in range(N_COINS):
         value: uint256 = self.balances[i] * _amount / total_supply
         assert value >= min_amounts[i], "Withdrawal resulted in fewer coins than expected"
         self.balances[i] -= value
         amounts[i] = value
-        if tethered[i] and not use_lending[i]:
-            USDT(self.coins[i]).transfer(msg.sender, value)
-        else:
-            assert_modifiable(cERC20(self.coins[i]).transfer(
-                msg.sender, value))
+        ERC20(self.coins[i]).transfer(msg.sender, value)
 
     self.token.burnFrom(msg.sender, _amount)  # Will raise if not enough
 
