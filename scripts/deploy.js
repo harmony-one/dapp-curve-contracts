@@ -1,6 +1,7 @@
 require('dotenv').config()
 const assert = require("assert")
 const erc20 = require(__dirname + "/../build/contracts/ERC20.json")
+const stableswap = require(__dirname + "/../build/contracts/Stableswap.json")
 
 let initHmy = require('../src/deploy_harmony')
 
@@ -24,15 +25,18 @@ function checkAndRecord(response, deployAddrs, name){
     deployAddrs[name] = response.transaction.receipt.contractAddress
 }
 
-// TODO: check minter call
-function setERC20Minter(minterAddress, contractAddress, hmy) {
+async function setERC20Minter(minterAddress, contractAddress, hmy) {
     let contract = hmy.contracts.createContract(erc20.abi, contractAddress)
-    contract.methods.set_minter().call(minterAddress, gasParams).then(console.log).catch(console.error)
+    await contract.methods.set_minter(minterAddress).call(gasParams).then((resp) => {
+        console.log("Minter for " + contractAddress + " is " + resp)
+    }).catch(console.error)
 }
 
-function logERC20Name(contractAddress, hmy) {
+async function logERC20Name(contractAddress, hmy) {
     let contract = hmy.contracts.createContract(erc20.abi, contractAddress)
-    contract.methods.name().call(gasParams).then(console.log).catch(console.error)
+    await contract.methods.name().call(gasParams).then((resp) => {
+        console.log("ERC20 name for " + contractAddress + " is " + resp)
+    }).catch(console.error)
 }
 
 initHmy().then((hmy) => {
@@ -40,23 +44,37 @@ initHmy().then((hmy) => {
 
     let deployAddrs = {}
 
+    console.log("\n")
     deploy(hmy, erc20, ["curve-test-A", "A", 18, Math.pow(10, 9)]).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20-a")
-        logERC20Name(response.transaction.receipt.contractAddress, hmy)
+        return response
+    }).then((response) => {
+        return logERC20Name(response.transaction.receipt.contractAddress, hmy)
     }).then(() => {
+        console.log("\n")
         return deploy(hmy, erc20, ["curve-test-B", "B", 18, Math.pow(10, 9)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20-b")
-        logERC20Name(response.transaction.receipt.contractAddress, hmy)
+        return response
+    }).then((response) => {
+        return logERC20Name(response.transaction.receipt.contractAddress, hmy)
     }).then(() => {
+        console.log("\n")
         return deploy(hmy, erc20, ["curve-test-C", "C", 18, Math.pow(10, 9)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20-c")
-        logERC20Name(response.transaction.receipt.contractAddress, hmy)
+        return response
+    }).then((response) => {
+        return logERC20Name(response.transaction.receipt.contractAddress, hmy)
     }).then(() => {
+        console.log("\n")
         return deploy(hmy, erc20, ["curve-test-pool", "P", 18, Math.pow(10, 9)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20-pool")
-        logERC20Name(response.transaction.receipt.contractAddress, hmy)
+        return response
+    }).then((response) => {
+        return logERC20Name(response.transaction.receipt.contractAddress, hmy)
+    }).then(() => {
+
     }).then(() => {process.exit()})
 })
