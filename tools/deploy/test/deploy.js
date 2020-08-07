@@ -5,7 +5,7 @@ const erc20 = require(__dirname + "/../../../build/contracts/ERC20.json")
 const stableswap = require(__dirname + "/../../../build/contracts/Stableswap.json")
 const gasParams = {gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
 
-let initHmy = require('../hmy')
+let initHmy = require('../../hmy')
 
 function deploy(hmy, contractBuildJson, args) {
     let contract = hmy.contracts.createContract(contractBuildJson.abi);

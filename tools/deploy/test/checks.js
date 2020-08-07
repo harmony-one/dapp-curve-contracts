@@ -5,7 +5,7 @@ const erc20 = require(__dirname + "/../../../build/contracts/ERC20.json")
 const stableswap = require(__dirname + "/../../../build/contracts/Stableswap.json")
 const gasParams = {gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
 
-let initHmy = require('../hmy')
+let initHmy = require('../../hmy')
 let addresses = require(__dirname + "/addresses.json")
 let testAcc1 = "0xd1FBb526A239E2A9Ae2Da5b295E0482a098A1a0e"  // one168am2f4z8832nt3d5keftczg9gyc5xsw8e25q5
 let testAcc1M = "picture blue version tube vivid sniff quick next expand need mesh aerobic excess initial mosquito govern limit quick wrestle shiver enemy exotic mother diamond"
