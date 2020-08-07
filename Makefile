@@ -7,6 +7,6 @@ install:
 deploy:
 	bash ./scripts/deploy.sh
 
-checks:
-	node ./scripts/checks.js
+test-checks:
+	node ./tools/deploy/test/checks.js
 

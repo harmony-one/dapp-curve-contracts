@@ -1,11 +1,11 @@
 require('dotenv').config()
 const fs = require('fs');
 const assert = require("assert")
-const erc20 = require(__dirname + "/../build/contracts/ERC20.json")
-const stableswap = require(__dirname + "/../build/contracts/Stableswap.json")
+const erc20 = require(__dirname + "/../../../build/contracts/ERC20.json")
+const stableswap = require(__dirname + "/../../../build/contracts/Stableswap.json")
 const gasParams = {gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
 
-let initHmy = require('../src/deploy_harmony')
+let initHmy = require('../hmy')
 
 function deploy(hmy, contractBuildJson, args) {
     let contract = hmy.contracts.createContract(contractBuildJson.abi);
@@ -86,11 +86,7 @@ initHmy().then((hmy) => {
         return setERC20Minter(response.transaction.receipt.contractAddress, deployAddrs.erc20_pool, hmy)
     }).then(() => {
         console.log("\nDeployed Addresses" + JSON.stringify(deployAddrs, null, 2))
-        let deployDir = __dirname + "/../deploy/contracts/"
-        if (!fs.existsSync(deployDir)) {
-            fs.mkdirSync(deployDir, {recursive: true})
-        }
-        let path = deployDir + "addresses.json"
+        let path = __dirname + "/addresses.json"
         fs.writeFileSync(path, JSON.stringify(deployAddrs))
         console.log("Saved deployed addresses at " + path)
         return new Promise(r => setTimeout(r, 8000));

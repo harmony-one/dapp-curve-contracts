@@ -1,7 +1,7 @@
 require('dotenv').config()
 const {Harmony} = require('@harmony-js/core')
 const {ChainType} = require('@harmony-js/utils')
-const {endpoint, chainID} = require("../config")
+const {endpoint, chainID} = require("../../config")
 
 function createHmy() {
     let hmy = new Harmony(endpoint,

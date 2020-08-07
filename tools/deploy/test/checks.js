@@ -1,12 +1,12 @@
 const fs = require('fs');
 const assert = require("assert")
 const BigNumber = require('bignumber.js');
-const erc20 = require(__dirname + "/../build/contracts/ERC20.json")
-const stableswap = require(__dirname + "/../build/contracts/Stableswap.json")
+const erc20 = require(__dirname + "/../../../build/contracts/ERC20.json")
+const stableswap = require(__dirname + "/../../../build/contracts/Stableswap.json")
 const gasParams = {gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
 
-let initHmy = require('../src/deploy_harmony')
-let addresses = require(__dirname + "/../deploy/contracts/addresses.json")
+let initHmy = require('../hmy')
+let addresses = require(__dirname + "/addresses.json")
 let testAcc1 = "0xd1FBb526A239E2A9Ae2Da5b295E0482a098A1a0e"  // one168am2f4z8832nt3d5keftczg9gyc5xsw8e25q5
 let testAcc1M = "picture blue version tube vivid sniff quick next expand need mesh aerobic excess initial mosquito govern limit quick wrestle shiver enemy exotic mother diamond"
 let testAcc2 = "0xd0284d8B2BCEb1801cfe6B58340ce547D177829c"  // one16q5ymzete6ccq887ddvrgr89glgh0q5u8uu4mv
