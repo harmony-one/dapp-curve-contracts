@@ -48,6 +48,7 @@ admin_fee: public(uint256)  # admin_fee * 1e10
 max_admin_fee: constant(uint256) = 5 * 10 ** 9
 
 owner: public(address)
+tokenAddress: public(address)
 token: pERC20
 
 admin_actions_deadline: public(timestamp)
@@ -85,8 +86,8 @@ def __init__(_coins: address[N_COINS], _underlying_coins: address[N_COINS],
     self.owner = msg.sender
     self.kill_deadline = block.timestamp + kill_deadline_dt
     self.is_killed = False
+    self.tokenAddress = _pool_token
     self.token = ERC20m(_pool_token)
-
 
 @private
 @constant
