@@ -4,7 +4,7 @@ install:
 	npm install
 	bash ./scripts/setup.sh
 
-deploy:
+test-deploy:
 	bash ./scripts/deploy.sh
 
 test-checks:

@@ -1,0 +1,5 @@
+node_modules/
+.env
+.idea/
+deployed/
+./tools/deploy/test/addresses.json
