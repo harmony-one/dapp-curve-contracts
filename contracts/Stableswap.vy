@@ -23,7 +23,10 @@ TETHERED: constant(bool[N_COINS]) = [False, False, False]
 
 FEE_DENOMINATOR: constant(uint256) = 10 ** 10
 PRECISION: constant(uint256) = 10 ** 18  # The precision to convert to
-PRECISION_MUL: constant(uint256[N_COINS]) = [convert(1000000000000, uint256), convert(1000000000000, uint256), convert(1000000000000, uint256)]
+
+# Precision is (in order) for 1DAI, hUSDT, hBUSD
+# Formula: 10 ** 18 // x where x is the coin precision 
+PRECISION_MUL: constant(uint256[N_COINS]) = [convert(1, uint256), convert(1, uint256), convert(1, uint256)]
 
 
 admin_actions_delay: constant(uint256) = 3 * 86400
