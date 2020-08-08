@@ -29,7 +29,14 @@ make test-checks
 ```
 
 ## Mainnet Deploy
-TODO: mainnet deploy process
+First configure constants in `./contracts/Stableswap.vy` if needed.
+
+Next, configure pool contract addresses, fees, and constants in `./tools/deploy/mainnet/deploy.js`.
+
+Then start the deploy with:
+```
+bash ./scripts/deploy.sh mainnet
+```
 
 ## Tools
 **Assumes setup has been ran to set proper `.env` file**
@@ -122,7 +129,7 @@ node ./tools/curve/unkill.js --pool $CURVE_POOL_ADDR
 ### Deploy
 #### Localnet / Testnet Deploy
 ```
-node ./tools/deploy/test/deploy.js
+bash ./scripts/deploy.sh
 ```
 > This will deploy the Curve LP contract as well as 3 HRC20 tokens that are part of the pool.
 >
