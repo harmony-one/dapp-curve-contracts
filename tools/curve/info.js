@@ -23,26 +23,31 @@ async function getStats(hmy) {
     let swap = hmy.contracts.createContract(stableswap.abi, argv.pool)
     let data = {}
 
-    data["coin_addr"] = [
-        await swap.methods.coins(0).call(gasParams),
-        await swap.methods.coins(1).call(gasParams),
-        await swap.methods.coins(2).call(gasParams)
-    ]
-    data["underlying_coin_addr"] = [  // unused
-        await swap.methods.underlying_coins(0).call(gasParams),
-        await swap.methods.underlying_coins(1).call(gasParams),
-        await swap.methods.underlying_coins(2).call(gasParams)
-    ]
-    data["balances"] = [
-        (await swap.methods.balances(0).call(gasParams)).toString(),
-        (await swap.methods.balances(1).call(gasParams)).toString(),
-        (await swap.methods.balances(2).call(gasParams)).toString()
-    ]
-    data["A"] = (await swap.methods.A().call(gasParams)).toString()
-    data["fee"] = (await swap.methods.fee().call(gasParams)).toString()
-    data["owner"] = await swap.methods.owner().call(gasParams)
-    data["virtual_price"] = (await swap.methods.get_virtual_price().call(gasParams)).toString()
-    data["token_address"] = await swap.methods.tokenAddress().call(gasParams)
+    try{
+        data["coin_addr"] = [
+            await swap.methods.coins(0).call(gasParams),
+            await swap.methods.coins(1).call(gasParams),
+            await swap.methods.coins(2).call(gasParams)
+        ]
+        data["underlying_coin_addr"] = [  // unused
+            await swap.methods.underlying_coins(0).call(gasParams),
+            await swap.methods.underlying_coins(1).call(gasParams),
+            await swap.methods.underlying_coins(2).call(gasParams)
+        ]
+        data["balances"] = [
+            (await swap.methods.balances(0).call(gasParams)).toString(),
+            (await swap.methods.balances(1).call(gasParams)).toString(),
+            (await swap.methods.balances(2).call(gasParams)).toString()
+        ]
+        data["A"] = (await swap.methods.A().call(gasParams)).toString()
+        data["fee"] = (await swap.methods.fee().call(gasParams)).toString()
+        data["owner"] = await swap.methods.owner().call(gasParams)
+        data["token_address"] = await swap.methods.tokenAddress().call(gasParams)
+        data["virtual_price"] = (await swap.methods.get_virtual_price().call(gasParams)).toString()
+    }catch (e) {
+        console.log(e)
+        return data
+    }
     return data
 }
 

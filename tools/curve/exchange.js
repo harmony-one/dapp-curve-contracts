@@ -4,6 +4,7 @@
 require('dotenv').config()
 const assert = require("assert")
 const yargs = require('yargs');
+const BigNumber = require('bignumber.js');
 const argv = yargs.option('pool', {
     alias: 'c',
     description: 'The curve liquidity pool contract address',
@@ -42,9 +43,9 @@ async function exchange(hmy) {
     let sourceCoinAddress = await swap.methods.coins(argv.from).call(gasParams)
     let coin = hmy.contracts.createContract(erc20.abi, sourceCoinAddress)
     let exchangeApprove = await coin.methods.approve(argv.pool, argv.amount).send(gasParams)
-    let exchangeAllow = (await coin.methods.allowance(hmy.wallet.signer.address, argv.pool).call(gasParams)).toNumber()
+    let exchangeAllow = new BigNumber((await coin.methods.allowance(hmy.wallet.signer.address, argv.pool).call(gasParams)))
     assert(exchangeApprove.status === "called")
-    assert(exchangeAllow >= argv.amount)
+    assert(exchangeAllow.isGreaterThanOrEqualTo(new BigNumber(argv.amount)))
     console.log("Approved token transfer for exchange...")
 
     await swap.methods.exchange(argv.from, argv.to, argv.amount, 0).send(gasParams).then((resp) => {
