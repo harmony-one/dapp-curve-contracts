@@ -176,10 +176,9 @@ async function testStableSwap(hmy) {
         new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString())
     ]
     let preRemovePoolTokenBalance = new BigNumber((await contract_ercPool.methods.balanceOf(testAcc1).call(gasParams)).toString())
-    let removedAmount = BigNumber.min(poolTokenBalance, new BigNumber(1e4))
+    let removedAmount = BigNumber.min(poolTokenBalance, new BigNumber(1e18)).toNumber()
 
-    assert (removedAmount.isGreaterThan(new BigNumber(0)))  // sanity check
-    await swap.methods.remove_liquidity(removedAmount.toNumber(), [0,0,0]).send(gasParams).then((resp) => {
+    await swap.methods.remove_liquidity(removedAmount, [0,0,0]).send(gasParams).then((resp) => {
         assert(resp.status === "called")
         console.log("Remove liquidity for " + testAcc1 + " response: "
             + JSON.stringify(resp.transaction.receipt, null, 2))
@@ -194,7 +193,7 @@ async function testStableSwap(hmy) {
     let postRemovePoolTokenBalance = new BigNumber((await contract_ercPool.methods.balanceOf(testAcc1).call(gasParams)).toString())
     assert(preRemovePoolTokenBalance.minus(postRemovePoolTokenBalance).eq(removedAmount))
 
-    for (let i = 6; i < preLiquidityTestBalances.length; i++){
+    for (let i = 0; i < preLiquidityTestBalances.length; i++){
         assert(postRemoveLiquidityTestBalances[i].isGreaterThan(preRemoveLiquidityTestBalances[i]))
     }
     console.log("Successfully checked balance changes")

@@ -7,6 +7,9 @@ install:
 test-deploy:
 	bash ./scripts/deploy.sh
 
+main-deploy:
+	bash ./scripts/deploy.sh mainnnet
+
 test-checks:
 	node ./tools/deploy/test/checks.js
 

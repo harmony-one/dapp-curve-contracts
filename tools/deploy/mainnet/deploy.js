@@ -4,6 +4,8 @@ const assert = require("assert")
 const erc20 = require(__dirname + "/../../../build/contracts/ERC20.json")
 const stableswap = require(__dirname + "/../../../build/contracts/Stableswap.json")
 const gasParams = {gasPrice: 0x4a817c800, gasLimit: 0x6691b7}
+const { toBech32 } = require("@harmony-js/crypto");
+const defaultContractAddr = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
 
 let initHmy = require('../../hmy')
 
@@ -42,55 +44,41 @@ async function logERC20Name(contractAddress, hmy) {
 
 initHmy().then((hmy) => {
     assert(hmy.wallet.accounts.length > 0)
-    let deployAddrs = {}
+    let deployAddrRecord = {
+        "deployer": toBech32(hmy.wallet.signer.address, "one1"),
+    }
+
+    let coins = [
+        "0x8BB676F403ff1BcbEB89497457F94C9b9484497d", //1DAI
+        "0xb839AA1E4c9634931749B4e46b80E3798ecf9563", //hUSDT
+        "0xEFA639964F44C02aC0fD5795C6623726C7DD41cf" //hBUSD
+    ]
+    let A = 85
+    let fee = 1e8
 
     console.log("=== Starting Deploy ===")
 
-    deploy(hmy, erc20, ["curve-test-A", "A", 18, Math.pow(18, 3)]).then((response) => {
-        checkAndRecord(response, deployAddrs, "erc20_a")
+    deploy(hmy, erc20, ["Curve.fi 1DAI/hUSDC/hUSDT", "1DAI + hUSDC + hUSDT", 18, 0]).then((response) => {
+        checkAndRecord(response, deployAddrRecord, "token_contract")
         return response
     }).then((response) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-B", "B", 18, Math.pow(10, 3)])
+        return deploy(hmy, stableswap, [
+            coins, [defaultContractAddr, defaultContractAddr, defaultContractAddr],
+            deployAddrRecord.token_contract, A, fee
+        ])
     }).then((response) => {
-        checkAndRecord(response, deployAddrs, "erc20_b")
-        return response
-    }).then((response) => {
-        let contractAddr = response.transaction.receipt.contractAddress
-        return logERC20Name(contractAddr, hmy)
+        checkAndRecord(response, deployAddrRecord, "stableswap_contract")
+        return setERC20Minter(response.transaction.receipt.contractAddress, deployAddrRecord.token_contract, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-C", "C", 18, Math.pow(10, 3)])
-    }).then((response) => {
-        checkAndRecord(response, deployAddrs, "erc20_c")
-        return response
-    }).then((response) => {
-        let contractAddr = response.transaction.receipt.contractAddress
-        return logERC20Name(contractAddr, hmy)
-    }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-pool", "P", 18, 0])
-    }).then((response) => {
-        checkAndRecord(response, deployAddrs, "erc20_pool")
-        return response
-    }).then((response) => {
-        let contractAddr = response.transaction.receipt.contractAddress
-        return logERC20Name(contractAddr, hmy)
-    }).then(() => {
-        let coins = [deployAddrs.erc20_a, deployAddrs.erc20_b, deployAddrs.erc20_c]
-        let A = 18
-        let fee = 1
-        return deploy(hmy, stableswap, [coins, coins, deployAddrs.erc20_pool, A, fee])
-    }).then((response) => {
-        checkAndRecord(response, deployAddrs, "stableswap")
-        return setERC20Minter(response.transaction.receipt.contractAddress, deployAddrs.erc20_pool, hmy)
-    }).then(() => {
-        console.log("\nDeployed Addresses" + JSON.stringify(deployAddrs, null, 2))
+        console.log("\nDeployed Addresses" + JSON.stringify(deployAddrRecord, null, 2))
         let path = __dirname + "/addresses.json"
-        fs.writeFileSync(path, JSON.stringify(deployAddrs))
+        fs.writeFileSync(path, JSON.stringify(deployAddrRecord))
         console.log("Saved deployed addresses at " + path)
-        return new Promise(r => setTimeout(r, 8000));
+        return new Promise(r => setTimeout(r, 2000));
     }).then(() => {
         process.exit()
-    })
+    }).catch(console.error)
 })
