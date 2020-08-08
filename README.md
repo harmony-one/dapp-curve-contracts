@@ -34,7 +34,7 @@ First configure constants in `./contracts/Stableswap.vy` if needed.
 Next, configure pool contract addresses, fees, and constants in `./tools/deploy/mainnet/deploy.js`.
 
 Then start the deploy with:
-```
+```bash
 bash ./scripts/deploy.sh mainnet
 ```
 
@@ -43,92 +43,92 @@ bash ./scripts/deploy.sh mainnet
 
 ### Tokens
 #### Check Balance
-```
+```bash
 node ./tools/tokens/balance.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/tokens/balance.js --token $HRC_TOKEN_ADDR --address $ADDRESS
 ``` 
 
 #### Mint
-```
+```bash
 node ./tools/tokens/mint.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/tokens/mint.js --token $HRC_TOKEN_ADDR --address $ADDRESS --amount 10000
 ``` 
 
 ### Curve
 #### Pool Info
-```
+```bash
 node ./tools/curve/info.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/info.js --pool $CURVE_POOL_ADDR
 ```
 
 #### Add Liquidity
-```
+```bash
 node ./tools/curve/add.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/add.js --pool $CURVE_POOL_ADDR --key $ACC_PRIV_KEY --amount 10000
 ```
 
 #### Remove Liquidity
-```
+```bash
 node ./tools/curve/remove.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/re,pve.js --pool $CURVE_POOL_ADDR --key $ACC_PRIV_KEY --amount 10000000
 ```
 
 #### Exchange Coins
-```
+```bash
 node ./tools/curve/exchange.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/exchange.js --pool $CURVE_POOL_ADDR --key $ACC_PRIV_KEY --amount 1000 --from 0 --to 2
 ```
 > Note that the `from` & `to` params are the INDEX of the coin from the list of supported coins in the pool.
 > This list can be found using the pool info tool.
 
 #### Kill
-```
+```bash
 node ./tools/curve/kill.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/kill.js --pool $CURVE_POOL_ADDR
 ```
 
 #### Unkill
-```
+```bash
 node ./tools/curve/unkill.js -h
 ```
 > Make sure you are in the root of the repo
 
-```
+```bash
 node ./tools/curve/unkill.js --pool $CURVE_POOL_ADDR
 ```
 
 
 ### Deploy
 #### Localnet / Testnet Deploy
-```
+```bash
 bash ./scripts/deploy.sh
 ```
 > This will deploy the Curve LP contract as well as 3 HRC20 tokens that are part of the pool.
@@ -136,7 +136,7 @@ bash ./scripts/deploy.sh
 > All addresses will be saved in `./tools/deploy/test/addresses.json`  
 
 #### Localnet / Testnet Basic Checks
-```
+```bash
 node ./tools/deploy/test/checks.js
 ```
 > This will mint some test tokens on each of the 3 test HRC20 tokens, 
