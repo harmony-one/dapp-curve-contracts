@@ -93,10 +93,30 @@ node ./tools/curve/exchange.js -h
 > Make sure you are in the root of the repo
 
 ```
-node ./tools/curve/re,pve.js --pool $CURVE_POOL_ADDR --key $ACC_PRIV_KEY --amount 1000 --from 0 --to 2
+node ./tools/curve/exchange.js --pool $CURVE_POOL_ADDR --key $ACC_PRIV_KEY --amount 1000 --from 0 --to 2
 ```
 > Note that the `from` & `to` params are the INDEX of the coin from the list of supported coins in the pool.
 > This list can be found using the pool info tool.
+
+#### Kill
+```
+node ./tools/curve/kill.js -h
+```
+> Make sure you are in the root of the repo
+
+```
+node ./tools/curve/kill.js --pool $CURVE_POOL_ADDR
+```
+
+#### Unkill
+```
+node ./tools/curve/unkill.js -h
+```
+> Make sure you are in the root of the repo
+
+```
+node ./tools/curve/unkill.js --pool $CURVE_POOL_ADDR
+```
 
 
 ### Deploy
