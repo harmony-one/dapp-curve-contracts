@@ -32,7 +32,7 @@ if [ -z "$TOKEN" ]; then
   exit 1
 fi
 
-#docker pull harmonyone/curve
+docker pull harmonyone/curve
 
 if [ "$MINT" == "true" ]; then
   docker run -it -v "$(realpath "$FILEPATH"):/tmp/fund.csv" harmonyone/curve fund -t "$TOKEN" -m mint
