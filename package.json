@@ -6,14 +6,18 @@
     "@harmony-js/core": "^0.1.49",
     "@harmony-js/network": "^0.1.45",
     "@harmony-js/utils": "^0.1.45",
+    "bn": "^1.0.5",
+    "bn.js": "^5.1.2",
     "core-util-is": "^1.0.2",
     "dotenv": "^8.1.0",
+    "fast-csv": "^4.3.1",
     "openzeppelin-solidity": "^2.2.0",
     "tslib": "^1.10.0",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
     "@harmony-js/crypto": "^0.1.48",
-    "bignumber.js": "^9.0.0"
+    "bignumber.js": "^9.0.0",
+    "csv-parse": "^4.12.0"
   }
 }

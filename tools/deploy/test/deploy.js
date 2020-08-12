@@ -46,14 +46,14 @@ initHmy().then((hmy) => {
 
     console.log("=== Starting Deploy ===")
 
-    deploy(hmy, erc20, ["curve-test-A", "A", 18, Math.pow(18, 3)]).then((response) => {
+    deploy(hmy, erc20, ["curve-test-A", "A", 18, Math.pow(10, 7)]).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_a")
         return response
     }).then((response) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-B", "B", 18, Math.pow(10, 3)])
+        return deploy(hmy, erc20, ["curve-test-B", "B", 18, Math.pow(10, 7)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_b")
         return response
@@ -61,7 +61,7 @@ initHmy().then((hmy) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        return deploy(hmy, erc20, ["curve-test-C", "C", 18, Math.pow(10, 3)])
+        return deploy(hmy, erc20, ["curve-test-C", "C", 18, Math.pow(10, 7)])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_c")
         return response

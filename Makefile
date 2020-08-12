@@ -13,3 +13,11 @@ main-deploy:
 test-checks:
 	node ./tools/deploy/test/checks.js
 
+docker-build:
+	docker build -t harmonyone/curve . --no-cache
+
+docker-build-cached:
+	docker build -t harmonyone/curve .
+
+docker-upload:
+	docker push harmonyone/curve
