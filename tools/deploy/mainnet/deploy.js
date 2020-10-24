@@ -51,14 +51,15 @@ initHmy().then((hmy) => {
     let coins = [
         "0x8BB676F403ff1BcbEB89497457F94C9b9484497d", //1DAI
         "0xb839AA1E4c9634931749B4e46b80E3798ecf9563", //hUSDT
-        "0xEFA639964F44C02aC0fD5795C6623726C7DD41cf" //hBUSD
+        "0xEFA639964F44C02aC0fD5795C6623726C7DD41cf",//hBUSD
+        "0x6689F57AD16c374783585ba2C77F5316789886F2",
     ]
     let A = 85
     let fee = 1e8
 
     console.log("=== Starting Deploy ===")
 
-    deploy(hmy, erc20, ["Curve.fi 1DAI/hUSDC/hUSDT", "1DAI + hUSDC + hUSDT", 18, 0]).then((response) => {
+    deploy(hmy, erc20, ["Curve.fi 1DAI/hUSDC/hUSDT/1USDC", "1DAI + hUSDC + hUSDT + 1USDC", 18, 0]).then((response) => {
         checkAndRecord(response, deployAddrRecord, "token_contract")
         return response
     }).then((response) => {
@@ -66,7 +67,7 @@ initHmy().then((hmy) => {
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
         return deploy(hmy, stableswap, [
-            coins, [defaultContractAddr, defaultContractAddr, defaultContractAddr],
+            coins, [defaultContractAddr, defaultContractAddr, defaultContractAddr,defaultContractAddr],
             deployAddrRecord.token_contract, A, fee
         ])
     }).then((response) => {

@@ -13,27 +13,27 @@ contract TOKEN:
 
 
 # This can (and needs to) be changed at compile time
-N_COINS: constant(int128) = 3
+N_COINS: constant(int128) = 4
 
 ZERO256: constant(uint256) = 0  # This hack is really bad XXX
-ZEROS: constant(uint256[N_COINS]) = [ZERO256, ZERO256, ZERO256]  # <- change
+ZEROS: constant(uint256[N_COINS]) = [ZERO256, ZERO256, ZERO256, ZERO256]  # <- change
 
-USE_LENDING: constant(bool[N_COINS]) = [False, False, False]
-TETHERED: constant(bool[N_COINS]) = [False, False, False]
+USE_LENDING: constant(bool[N_COINS]) = [False, False, False, False]
+TETHERED: constant(bool[N_COINS]) = [False, False, False, False]
 
 FEE_DENOMINATOR: constant(uint256) = 10 ** 10
 PRECISION: constant(uint256) = 10 ** 18  # The precision to convert to
 
 # Precision is (in order) for 1DAI, hUSDT, hBUSD
 # Formula: 10 ** 18 // x where x is the coin precision 
-PRECISION_MUL: constant(uint256[N_COINS]) = [convert(1, uint256), convert(1, uint256), convert(1, uint256)]
+PRECISION_MUL: constant(uint256[N_COINS]) = [convert(1, uint256), convert(1, uint256), convert(1, uint256), convert(1, uint256)]
 
 
-admin_actions_delay: constant(uint256) = 3 * 86400
+admin_actions_delay: constant(uint256) = 4 * 86400
 
 # Events
 TokenExchange: event({buyer: indexed(address), sold_id: int128, tokens_sold: uint256, bought_id: int128, tokens_bought: uint256})
-TokenExchangeUnderlying: event({buyer: indexed(address), sold_id: int128, tokens_sold: uint256, bought_id: int128, tokens_bought: uint256})
+TokenExchangeUnderlying: event({buyer: indexed(address), sold_id: int128, tpokens_sold: uint256, bought_id: int128, tokens_bought: uint256})
 AddLiquidity: event({provider: indexed(address), token_amounts: uint256[N_COINS], fees: uint256[N_COINS], invariant: uint256, token_supply: uint256})
 RemoveLiquidity: event({provider: indexed(address), token_amounts: uint256[N_COINS], fees: uint256[N_COINS], token_supply: uint256})
 RemoveLiquidityImbalance: event({provider: indexed(address), token_amounts: uint256[N_COINS], fees: uint256[N_COINS], invariant: uint256, token_supply: uint256})
