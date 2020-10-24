@@ -69,6 +69,14 @@ initHmy().then((hmy) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
+        return deploy(hmy, erc20, ["curve-test-D", "D", 18, Math.pow(10, 7)])
+    }).then((response) => {
+        checkAndRecord(response, deployAddrs, "erc20_d")
+        return response
+    }).then((response) => {
+        let contractAddr = response.transaction.receipt.contractAddress
+        return logERC20Name(contractAddr, hmy)
+    }).then(() => {
         return deploy(hmy, erc20, ["curve-test-pool", "P", 18, 0])
     }).then((response) => {
         checkAndRecord(response, deployAddrs, "erc20_pool")
@@ -77,7 +85,7 @@ initHmy().then((hmy) => {
         let contractAddr = response.transaction.receipt.contractAddress
         return logERC20Name(contractAddr, hmy)
     }).then(() => {
-        let coins = [deployAddrs.erc20_a, deployAddrs.erc20_b, deployAddrs.erc20_c]
+        let coins = [deployAddrs.erc20_a, deployAddrs.erc20_b, deployAddrs.erc20_c, deployAddrs.erc20_d]
         let A = 18
         let fee = 1
         return deploy(hmy, stableswap, [coins, coins, deployAddrs.erc20_pool, A, fee])

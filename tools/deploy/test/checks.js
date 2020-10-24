@@ -19,48 +19,107 @@ async function fund(hmy)  {
     let contract_ercA = hmy.contracts.createContract(erc20.abi, addresses.erc20_a)
     let contract_ercB = hmy.contracts.createContract(erc20.abi, addresses.erc20_b)
     let contract_ercC = hmy.contracts.createContract(erc20.abi, addresses.erc20_c)
+    let contract_ercD = hmy.contracts.createContract(erc20.abi, addresses.erc20_d)
 
     console.log("minting for " + testAcc1 + " on " + addresses.erc20_a)
     await contract_ercA.methods.mint(testAcc1, mintAmount).send(gasParams).then((resp) => {
         return contract_ercA.methods.balanceOf(testAcc1).call(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         console.log("balance for " + testAcc1 + " on " + addresses.erc20_a + " : " + resp.toString())
-    }).then(() => {
+    }).
+    
+    then(() => {
         console.log("minting for " + testAcc1 + " on " + addresses.erc20_b)
         return contract_ercB.methods.mint(testAcc1, mintAmount).send(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         return contract_ercB.methods.balanceOf(testAcc1).call(gasParams)
-    }).then((resp) => {
-        console.log("balance for " + testAcc1 + " on " + addresses.erc20_a + " : " + resp.toString())
-    }).then(() => {
+    }).
+    
+    then((resp) => {
+        console.log("balance for " + testAcc1 + " on " + addresses.erc20_b + " : " + resp.toString())
+    }).
+    
+    then(() => {
         console.log("minting for " + testAcc1 + " on " + addresses.erc20_c)
         return contract_ercC.methods.mint(testAcc1, mintAmount).send(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         return contract_ercC.methods.balanceOf(testAcc1).call(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         console.log("balance for " + testAcc1 + " on " + addresses.erc20_c + " : " + resp.toString())
-    }).then(() => {
+    }).
+    
+    then(() => {
+        console.log("minting for " + testAcc1 + " on " + addresses.erc20_d)
+        return contract_ercD.methods.mint(testAcc1, mintAmount).send(gasParams)
+    }).
+    
+    then((resp) => {
+        return contract_ercD.methods.balanceOf(testAcc1).call(gasParams)
+    }).
+    
+    then((resp) => {
+        console.log("balance for " + testAcc1 + " on " + addresses.erc20_d + " : " + resp.toString())
+    }).
+
+    then(() => {
         console.log("minting for " + testAcc2 + " on " + addresses.erc20_a)
         return contract_ercA.methods.mint(testAcc2, mintAmount).send(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         return contract_ercA.methods.balanceOf(testAcc2).call(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         console.log("balance for " + testAcc2 + " on " + addresses.erc20_a + " : " + resp.toString())
-    }).then(() => {
+    }).
+    
+    then(() => {
         console.log("minting for " + testAcc2 + " on " + addresses.erc20_b)
         return contract_ercB.methods.mint(testAcc2, mintAmount).send(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         return contract_ercB.methods.balanceOf(testAcc2).call(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         console.log("balance for " + testAcc2 + " on " + addresses.erc20_b + " : " + resp.toString())
-    }).then(() => {
+    }).
+    
+    then(() => {
         console.log("minting for " + testAcc2 + " on " + addresses.erc20_c)
         return contract_ercC.methods.mint(testAcc2, mintAmount).send(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         return contract_ercC.methods.balanceOf(testAcc2).call(gasParams)
-    }).then((resp) => {
+    }).
+    
+    then((resp) => {
         console.log("balance for " + testAcc2 + " on " + addresses.erc20_c + " : " + resp.toString())
-    })
+    }).
+
+    then(() => {
+        console.log("minting for " + testAcc2 + " on " + addresses.erc20_d)
+        return contract_ercD.methods.mint(testAcc2, mintAmount).send(gasParams)
+    }).
+    
+    then((resp) => {
+        return contract_ercD.methods.balanceOf(testAcc2).call(gasParams)
+    }).
+    
+    then((resp) => {
+        console.log("balance for " + testAcc2 + " on " + addresses.erc20_d + " : " + resp.toString())
+    });
 }
 
 async function testStableSwap(hmy) {
@@ -69,16 +128,19 @@ async function testStableSwap(hmy) {
     let contract_ercA = hmy.contracts.createContract(erc20.abi, addresses.erc20_a)
     let contract_ercB = hmy.contracts.createContract(erc20.abi, addresses.erc20_b)
     let contract_ercC = hmy.contracts.createContract(erc20.abi, addresses.erc20_c)
+    let contract_ercD = hmy.contracts.createContract(erc20.abi, addresses.erc20_d)
     let contract_ercPool = hmy.contracts.createContract(erc20.abi, addresses.erc20_pool)
     let swap = hmy.contracts.createContract(stableswap.abi, addresses.stableswap)
     let coins = [
         await swap.methods.coins(0).call(gasParams),
         await swap.methods.coins(1).call(gasParams),
-        await swap.methods.coins(2).call(gasParams)
+        await swap.methods.coins(2).call(gasParams),
+        await swap.methods.coins(3).call(gasParams)
     ]
     assert(coins[0].toLowerCase() === addresses.erc20_a.toLowerCase())
     assert(coins[1].toLowerCase() === addresses.erc20_b.toLowerCase())
     assert(coins[2].toLowerCase() === addresses.erc20_c.toLowerCase())
+    assert(coins[3].toLowerCase() === addresses.erc20_d.toLowerCase())
 
     // === Test adding liquidity ===
     console.log("Testing add liquidity...")
@@ -89,7 +151,9 @@ async function testStableSwap(hmy) {
     let preLiquidityTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc1).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc1).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc1).call(gasParams)).toString())
+
     ]
 
     let approve1 = await contract_ercA.methods.approve(addresses.stableswap, liquidityAmount).send(gasParams)
@@ -104,9 +168,13 @@ async function testStableSwap(hmy) {
     let allow3 = (await contract_ercC.methods.allowance(testAcc1, addresses.stableswap).call(gasParams)).toNumber()
     assert(approve3.status === "called")
     assert(allow3 >= liquidityAmount)
+    let approve4 = await contract_ercD.methods.approve(addresses.stableswap, liquidityAmount).send(gasParams)
+    let allow4 = (await contract_ercD.methods.allowance(testAcc1, addresses.stableswap).call(gasParams)).toNumber()
+    assert(approve4.status === "called")
+    assert(allow4 >= liquidityAmount)
     console.log("Successfully approved token transfer for adding liquidity")
 
-    await swap.methods.add_liquidity([liquidityAmount, liquidityAmount, liquidityAmount], 0).send(gasParams).then((resp) => {
+    await swap.methods.add_liquidity([liquidityAmount, liquidityAmount, liquidityAmount, liquidityAmount], 0).send(gasParams).then((resp) => {
         assert(resp.status === "called")
         console.log("Added test liquidity for account " + testAcc1 + " response: "
             + JSON.stringify(resp.transaction.receipt, null, 2))
@@ -116,7 +184,9 @@ async function testStableSwap(hmy) {
     let postLiquidityTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc1).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc1).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc1).call(gasParams)).toString())
+
     ]
 
     for (let i = 0; i < preLiquidityTestBalances.length; i++){
@@ -138,7 +208,9 @@ async function testStableSwap(hmy) {
     let preExchangeTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc2).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc2).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc2).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc2).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc2).call(gasParams)).toString())
+
     ]
 
     let exchangeApprove = await contract_ercA.methods.approve(addresses.stableswap, exchangedAmount).send(gasParams)
@@ -157,7 +229,8 @@ async function testStableSwap(hmy) {
     let postExchangeTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc2).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc2).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc2).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc2).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc2).call(gasParams)).toString())
     ]
     assert(preExchangeTestBalances[0].minus(postExchangeTestBalances[0]).eq(new BigNumber(exchangedAmount)))
     let slipDiff = new BigNumber(exchangedAmount).minus(postExchangeTestBalances[1].minus(preExchangeTestBalances[1]))
@@ -173,12 +246,13 @@ async function testStableSwap(hmy) {
     let preRemoveLiquidityTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc1).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc1).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc1).call(gasParams)).toString())
     ]
     let preRemovePoolTokenBalance = new BigNumber((await contract_ercPool.methods.balanceOf(testAcc1).call(gasParams)).toString())
     let removedAmount = BigNumber.min(poolTokenBalance, new BigNumber(1e18)).toNumber()
 
-    await swap.methods.remove_liquidity(removedAmount, [0,0,0]).send(gasParams).then((resp) => {
+    await swap.methods.remove_liquidity(removedAmount, [0,0,0,0]).send(gasParams).then((resp) => {
         assert(resp.status === "called")
         console.log("Remove liquidity for " + testAcc1 + " response: "
             + JSON.stringify(resp.transaction.receipt, null, 2))
@@ -188,7 +262,8 @@ async function testStableSwap(hmy) {
     let postRemoveLiquidityTestBalances = [
         new BigNumber((await contract_ercA.methods.balanceOf(testAcc1).call(gasParams)).toString()),
         new BigNumber((await contract_ercB.methods.balanceOf(testAcc1).call(gasParams)).toString()),
-        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString())
+        new BigNumber((await contract_ercC.methods.balanceOf(testAcc1).call(gasParams)).toString()),
+        new BigNumber((await contract_ercD.methods.balanceOf(testAcc1).call(gasParams)).toString())
     ]
     let postRemovePoolTokenBalance = new BigNumber((await contract_ercPool.methods.balanceOf(testAcc1).call(gasParams)).toString())
     assert(preRemovePoolTokenBalance.minus(postRemovePoolTokenBalance).eq(removedAmount))
